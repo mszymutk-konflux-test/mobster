@@ -88,3 +88,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for environment setup, running checks, an
 - [Release process](docs/release.md)
 - [Full documentation](https://konflux-ci.dev/mobster/)
 - [License](https://github.com/konflux-ci/mobster/blob/main/LICENSE) — Apache License 2.0
+
