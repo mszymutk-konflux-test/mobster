@@ -1,0 +1,1522 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Mobster is a tool for managing Software Bill of Materials (SBOMs)">
+      
+      
+      
+      
+        <link rel="prev" href="../delete/">
+      
+      
+        <link rel="next" href="../oci_index_sbom/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>OCI image - Mobster - SBOM management tool</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#generate-oci-image" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Mobster - SBOM management tool" class="md-header__button md-logo" aria-label="Mobster - SBOM management tool" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Mobster - SBOM management tool
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              OCI image
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Konflux-ci/mobster" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    mobster
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../sbom_lifecycle/" class="md-tabs__link">
+          
+  
+  
+  SBOM lifecyle
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  SBOM content types
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../formats/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  SBOM formats
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../development-environment/" class="md-tabs__link">
+          
+  
+  
+  Admin & developer guides
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Mobster - SBOM management tool" class="md-nav__button md-logo" aria-label="Mobster - SBOM management tool" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Mobster - SBOM management tool
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Konflux-ci/mobster" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    mobster
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SBOM lifecyle
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    SBOM lifecyle
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sbom_lifecycle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lifecycle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../oci_image_augmentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Augmentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../upload/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upload
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../download/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Download
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../delete/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Delete
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SBOM content types
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    SBOM content types
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCI image
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCI image
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-of-arguments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        List of arguments
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="List of arguments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deprecated-arguments-will-be-removed-in-future-versions-and-fully-replaced-by-metadata-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deprecated arguments (will be removed in future versions and fully replaced by --metadata-path)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generating-a-non-hermetic-sbom-from-scratch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generating a (non-hermetic) SBOM from scratch
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Generating a (non-hermetic) SBOM from scratch">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deprecated-using-dockerfile-json-instead-of-buildprobe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deprecated: using dockerfile-json instead of buildprobe
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contextual-sbom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contextual SBOM
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requirements-for-executing-contextual-sbom-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements for executing Contextual SBOM workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functional-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functional breakdown
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Functional breakdown">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#contextual-sbom-for-non-hermetic-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contextual SBOM for non-hermetic build
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contextual-sbom-for-hermetic-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contextual SBOM for hermetic build
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../oci_index_sbom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCI index image
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../oci_artifact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCI artifact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modelcar_sbom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modelcar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../product/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Product
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SBOM formats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Admin & developer guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Admin & developer guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development-environment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development environment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integration-testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integration testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="generate-oci-image">Generate OCI Image</h1>
+<p>This utility allows users to generate SBOMs related to Container Images.</p>
+<h2 id="architecture">Architecture</h2>
+<p>The scripts accepts any number of SBOMs generated by SYFT and at most one SBOM
+generated by Hermeto (previously known as Cachi2), with the requirement that
+at least one SBOM is provided in total. It combines these SBOMs
+and takes them as a context of the built image.</p>
+<p>The script takes a simple YAML file to determine container content and what
+other images were used to build the image:</p>
+<pre><code class="language-yaml"># the image being built:
+image:
+  pullspec: example.com/foo:1.2.3
+  digest: sha256:bf07a7fbb825fc0aae7bf4a1177b2b31fcf8a3feeaf7092761e18c859ee52a9c
+
+# base (parent) image of the final stage (FROM in the last stage):
+base_image:
+  pullspec: example.com/bar:4.5.6
+  digest: sha256:b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f4850b878ae4944c
+
+# base images of builder stages (non-final FROM stages):
+builder_base_images:
+- pullspec: example.com/builder:1.0
+  digest: sha256:a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2
+
+# for other images used in the OCI image (COPY --from=image:tag):
+extra_images:
+- pullspec: example.com/baz:7.8.9
+  digest: sha256:7d865e959b2466918c9863afca942d0fb89d7c9ac0c99bafc3749504ded97730
+</code></pre>
+<p>Note: <code>base_image</code> is absent when the final stage is <code>FROM scratch</code> or
+<code>FROM oci-archive:...</code>. <code>builder_base_images</code> and <code>extra_images</code> are empty
+lists when there are no builder stages or external image references.</p>
+<p>You can easily generate this metadata using buildprobe (see
+<a href="https://github.com/konflux-ci/capo">capo</a> for details).</p>
+<p>All provided SBOMs must be in the same specification! This script does not
+support combining SPDX and CycloneDX SBOMs.</p>
+<h2 id="usage">Usage</h2>
+<pre><code class="language-bash">mobster --verbose  generate oci-image \
+--from-syft tests/sbom/test_merge_data/cyclonedx/syft-sboms/pip-e2e-test.bom.json \
+--from-syft tests/sbom/test_merge_data/cyclonedx/syft-sboms/ubi-micro.bom.json \
+--from-hermeto tests/sbom/test_merge_data/cyclonedx/cachi2.bom.json \
+--metadata-path tests/data/buildprobe_metadata/metadata_multistage_base_with_builder_and_extra.yaml
+</code></pre>
+<h2 id="list-of-arguments">List of arguments</h2>
+<ul>
+<li><code>--from-syft</code> -- points to an SBOM file (in a JSON format) created by Syft, can be used multiple times</li>
+<li><code>--from-hermeto</code> -- points to an SBOM file (in a JSON format) created by Hermeto</li>
+<li><code>--image-pullspec</code> -- the pullspec of the image processed in the format <code>&lt;registry&gt;/&lt;repository&gt;:&lt;tag&gt;</code></li>
+<li><code>--image-digest</code> -- the digest of the image processed in the format <code>sha256:&lt;digest value&gt;</code></li>
+<li><code>--metadata-path</code> -- points to a Dockerfile/Containerfile metadata YAML file</li>
+<li><code>--contextualize</code> -- Allows SBOM contextualization (see <a href="#contextual-sbom">Contextual SBOM</a>)</li>
+<li><code>--output</code> -- where to save the SBOM. prints it to STDOUT if this is not specified</li>
+<li><code>--arch</code> -- Image architecture in OCI format (e.g., <code>amd64</code>, <code>arm64</code>, <code>ppc64le</code>, <code>s390x</code>). Linux kernel format values (e.g., <code>x86_64</code>, <code>aarch64</code>) are also accepted and normalized automatically to the OCI format. Defaults to the architecture of the current system.</li>
+<li><code>--skip-validation</code> -- skips validation of the SBOM</li>
+<li><code>--additional-base-image</code> -- base (builder) image to add, can be specified multiple times. Expects the format <code>&lt;registry&gt;/&lt;repository&gt;:&lt;tag&gt;@sha256:&lt;digest value&gt;</code>.</li>
+<li><code>--build-metadata-path</code> -- points to a builder content metadata JSON file produced by <a href="https://github.com/konflux-ci/capo">capo</a>. Required for builder content contextualization.</li>
+</ul>
+<h3 id="deprecated-arguments-will-be-removed-in-future-versions-and-fully-replaced-by-metadata-path">Deprecated arguments (will be removed in future versions and fully replaced by --metadata-path)</h3>
+<ul>
+<li><code>--parsed-dockerfile-path</code> -- points to a dockerfile processed by <code>dockerfile-json</code>. Use <code>--metadata-path</code> instead.</li>
+<li><code>--base-image-digest-file</code> -- points to a file with digests for images used in Dockerfile. Expected format: <code>&lt;registry&gt;/&lt;repository&gt;:&lt;tag&gt; &lt;registry&gt;/&lt;repository&gt;:&lt;tag&gt;@sha256:&lt;digest&gt;</code>. Use <code>--metadata-path</code> instead.</li>
+<li><code>--dockerfile-target</code> -- the name of the build target from the Dockerfile. Use <code>--metadata-path</code> instead.</li>
+</ul>
+<h2 id="generating-a-non-hermetic-sbom-from-scratch">Generating a (non-hermetic) SBOM from scratch</h2>
+<p>To build an SBOM with only the OCI image, you will need to run several tools to
+get prerequisite files to use in the <code>mobster generate</code> command. These two tools are:</p>
+<ul>
+<li>Syft (https://github.com/anchore/syft): for initial scanning and SBOM generation</li>
+<li>buildprobe (provided by capo at https://github.com/konflux-ci/capo): for
+  generating a human-readable Dockerfile/Containerfile manifest</li>
+</ul>
+<p>Download and install them before this process.</p>
+<p>Assuming you have the Containerfile, and the OCI image stored in a repository
+(or your localhost), the process is as follows:</p>
+<ol>
+<li>Use Syft to generate the intermediate SBOM to use in <code>--from-syft</code>, in SPDX format:</li>
+</ol>
+<pre><code class="language-sh">syft scan quay.io/konflux-ci/mobster:latest --output spdx-json &gt; syft.json
+</code></pre>
+<ol>
+<li>Use buildprobe to generate a machine-readable Dockerfile/Containerfile
+   description for the tool to use:</li>
+</ol>
+<pre><code class="language-sh">buildprobe buildah --tag=&quot;quay.io/your-image:latest&quot; --target=&quot;&quot; --containerfile=&quot;Containerfile&quot; &gt; metadata.yaml
+</code></pre>
+<ol>
+<li>Run <code>mobster generate</code> with the prerequisite files and the same OCI image
+   URL you used in the previous steps (note the argument order, <code>--output</code>
+   should come before <code>oci-image</code>):</li>
+</ol>
+<pre><code class="language-sh">mobster generate \
+    --output full-sbom.json \
+    oci-image \
+    --from-syft syft.json \
+    --metadata-path metadata.yaml
+</code></pre>
+<p>Once the command is complete, you should see the full Mobster SBOM in
+<code>full-sbom.json</code> in your working directory.</p>
+<h3 id="deprecated-using-dockerfile-json-instead-of-buildprobe">Deprecated: using dockerfile-json instead of buildprobe</h3>
+<p>For backward compatibility, you can still use the deprecated <code>dockerfile-json</code>
+based workflow. 
+Note: This path only supports parent contextualization (no builder content).
+It will be removed in a future version. Full contextualization parent + builder
+content can be achieved only by use of the --metadata-path argument.</p>
+<pre><code class="language-sh">mobster generate \
+    --output full-sbom.json \
+    oci-image \
+    --from-syft syft.json \
+    --parsed-dockerfile-path containerfile.json \
+    --base-image-digest-file base_images_digests.txt \
+    --image-pullspec quay.io/konflux-ci/mobster:latest \
+    --image-digest sha256:1234567890abcdef...
+</code></pre>
+<h2 id="contextual-sbom">Contextual SBOM</h2>
+<p>Contextual SBOM is a feature that establishes relationships between container images and their parent
+(base) or builder images in the software supply chain. Instead of treating each
+image as isolated, it creates a hierarchical view showing how packages flow from
+parent or builder images to child images. Knowing the origin of the content establishes a
+foundation for targeted content and vulnerability tracking within the image hierarchy.</p>
+<p>This documentation is intended for anyone interested in contextual SBOM or directly using it.
+It aims to set clear expectations about the feature by defining the requirements for obtaining it,
+explaining how it is assembled and structured, outlining potential future changes, and describing
+its benefits and limitations.</p>
+<ul>
+<li>Release status:<ul>
+<li>✅ <strong>Contextual SBOM for non-hermetic build</strong><ul>
+<li>identification of the base image content in component in non-hermetic build</li>
+<li>achieved by matching packages from the base image SBOM to the component
+  SBOM and marking their origin with relationships</li>
+</ul>
+</li>
+<li>✅ <strong>Builder content contextualization</strong><ul>
+<li>identification of the origin of the content copied from multistage build stages
+  to component</li>
+<li>achieved by tracing content from builder and intermediate images
+  using buildah build artifacts and reparenting packages in the
+  component SBOM to their origin builder or intermediate images</li>
+</ul>
+</li>
+<li>⏳ <strong>Contextual SBOM for hermetic build</strong><ul>
+<li>differentiation of the base image content, builder content and component content
+  in hermetic build</li>
+<li>assembled from base image content, hermeto content and - in multistage builds -
+  builder content</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="requirements-for-executing-contextual-sbom-workflow">Requirements for executing Contextual SBOM workflow</h2>
+<ul>
+<li><code>--contextualize</code> flag is present</li>
+<li><code>--metadata-path</code> is provided - buildprobe metadata YAML describing participating
+  images (base image, builder base images, extra images). Generated by
+  <a href="https://github.com/konflux-ci/capo">buildprobe</a> from buildah storage after the build.</li>
+<li>For parent content contextualization: base image of the component must have
+  an SBOM attached (e.g. via cosign) in SPDX format with version 2.X.
+  When the final stage is <code>FROM scratch</code> or <code>FROM oci-archive:...</code>, parent
+  contextualization is skipped but builder content contextualization still proceeds.</li>
+<li>For builder content contextualization: <code>--build-metadata-path</code> is provided - JSON file
+  containing per-package metadata - PURL, origin type (builder base image or intermediate
+  image), source pullspec - produced by
+  <a href="https://github.com/konflux-ci/capo">capo</a> from buildah build artifacts.
+  The image must be built with buildah &gt;= 1.44.0 using <code>--save-stages --stage-labels</code>
+  flags so that intermediate images are preserved and labeled for capo to identify
+  them for correct resolving of the origin of the content.</li>
+</ul>
+<p>If any requirement is not met, non-contextual SBOM will be produced.
+Note: if <code>--build-metadata-path</code> is omitted, parent contextualization still proceeds
+but builder content is skipped with warning. This is not a recommended usage - it exists
+to preserve backward compatibility and for experimentation purposes.
+Users should be aware that the resulting SBOM will be incomplete for multistage builds
+(a warning is logged in this case).
+Parent and builder content contextualization are treated as an atomic operation:
+if parent contextualization fails (e.g. parent SBOM cannot be downloaded),
+builder content contextualization is not attempted.
+If builder content contextualization fails, parent contextualization is rolled back.
+In both cases, non-contextual SBOM is produced.</p>
+<h2 id="functional-breakdown">Functional breakdown</h2>
+<ul>
+<li>Feature profoundly changes relationship structure of the SBOM<ul>
+<li><strong>Non-contextual SBOM:</strong> Relationships capture only first base image as component ancestor.
+  All package relationships point to component. There is no concept of the base/parent or
+  builder image content, origin of the packages is unknown. Those are all SBOMs produced
+  before contextualization.</li>
+<li><strong>Contextual SBOM:</strong> Relationships capture all base images as component ancestors in
+  ordered chain up to last non-contextualized ancestor. In multistage builds,
+  builder base images are captured as build tools of the component.
+  When a builder stage installs or creates content on top of its base image
+  (via RUN, COPY, etc.) and that content is copied to the final image,
+  an intermediate image is created in the SBOM representing that modified state.
+  If no such content is detected, only the builder base image appears.
+  Package relationships point to their actual origin - parent image (or its
+  ancestors), builder base image (package already present in the builder image before
+  the build), intermediate image (package installed or created during the builder
+  stage), or component itself (package installed in the final stage) defining true
+  origin all of the content present in the component.</li>
+</ul>
+</li>
+<li>Mechanism of Contextual SBOM assembly is different for the hermetic and non-hermetic build.
+  Non-hermetic builds use <strong>matching</strong> - syft scans the final image and packages are mapped
+  between parent and component SBOMs by unique identifiers (checksum, verification code, PURL).
+  In multistage builds, capo output is used to reparent matched packages to their origin
+  builder or intermediate images.
+  Hermetic builds use <strong>assembly</strong> — the SBOM is composed from downloaded parent content,
+  hermeto content (component-only and intermediate, from verified lockfile) and builder
+  content (from capo).
+  Matching is still used but differently: to reparent intermediate content in hermeto's
+  lockfile and to identify and remove packages removed at build time from the parent image.
+  Syft scan of the component is not used in the final SBOM - it serves only as a helper
+  for removed-at-build-time detection. This results in a more accurate SBOM with less
+  dependence on syft.</li>
+<li>Comparing to non-contextual SBOM, <strong>all packages remain present</strong>; none are removed.</li>
+<li>Changes are <strong>backward compatible</strong> and build on each other,
+  resulting in a richer and more accurate SBOM. Base image content identification
+  in non-hermetic builds has been enhanced with builder content for components with
+  multistage builds, forming the foundation for contextual SBOMs in hermetic builds.</li>
+<li>Contextual SBOMs are designed to be <strong>self-assembling</strong> and this works across hermetic and
+  non-hermetic builds interchangeably and also with contextualized or non-contextualized
+  parent SBOMs. 
+  It means that built component can be contextualized by its parent SBOM regardless if parent
+  SBOM is sourced from hermetic or non-hermetic build, or if it is contextualized or
+  non-contextualized. It also means that if parent SBOM is contextualized (is aware of its 
+  parent - or component's grandparent content), contextual information is preserved and
+  passed to the component.</li>
+<li>Contextual SBOM mechanism can be disabled by <em>not</em> including <code>--contextualize</code> flag in
+  <code>mobster generate oci-image</code> command - in that case, non-contextual SBOM will be produced.</li>
+</ul>
+<h3 id="contextual-sbom-for-non-hermetic-build">Contextual SBOM for non-hermetic build</h3>
+<p>Contextual SBOM for non-hermetic build consists of two steps:</p>
+<p><strong>Parent content contextualization:</strong> Syft scans the final image to produce a component SBOM.
+A SBOM of the base (parent) image is downloaded (if it exists and is in SPDX format) and
+packages are matched from parent to component by unique identifiers (checksum, verification
+code, PURL). <code>CONTAINS</code> relationships of matched packages are shifted from the component
+to their origin parent or grandparent images.</p>
+<p><strong>Builder content contextualization:</strong> For multistage builds, capo traces only the content
+that was actually copied from builder stages to the final image. Starting from COPY
+instructions in the final stage, it follows the source paths back through builder stages
+and diffs intermediate images against their builder base images to identify whether the
+copied content originated from the builder base image or was installed during the builder
+stage. Packages in the component SBOM that match capo's output are reparented
+to their origin builder base or intermediate images. No packages are added or removed —
+builder-copied content is already present in the component SBOM from the syft scan;
+capo's metadata only provides the origin information for reparenting.</p>
+<p><em>Warning:</em> Matching mechanism is not perfect, because SPDX specification is missing
+a consistent unique identifier across different packages and thus Contextual SBOM for
+non-hermetic build is for now the best effort. Package with missing unique identifier is
+named as anonymous. Anonymous package situated in parent cannot be matched in component, and
+anonymous package in component cannot be matched with any parent package to be contextualized
+(tracked up the image chain) - their source origin cannot be determined.
+Also from the perspective of the builder content, capo excludes anonymous packages from
+its builder metadata output.
+This might be improved in future versions by flagging such anonymous packages in SBOM
+making them more visible.
+For every Contextual SBOM document produced in non-hermetic build, packages fall into
+one of the following categories:
+- <strong>contextualized to parent</strong> - matched and reparented to parent or grandparent image
+- <strong>contextualized to builder</strong> - matched and reparented to builder base or intermediate image
+- <strong>component-only</strong> - has unique identifier but was not matched to parent or builder content;
+  considered as installed in the final stage
+- <strong>anonymous</strong> - missing unique identifier; origin cannot be determined</p>
+<h3 id="contextual-sbom-for-hermetic-build">Contextual SBOM for hermetic build</h3>
+<p>Unlike non-hermetic builds, hermetic Contextual SBOM is not produced by matching packages
+between two independently scanned SBOMs. Instead, it is <strong>assembled</strong> from two
+(single-stage builds) or three (multi-stage builds) content sources:</p>
+<ol>
+<li><strong>Downloaded parent content</strong> - defines the content of the base image. May be previously
+   contextualized or not. If not available, contextualization is skipped and non-contextual
+   SBOM is produced. Before assembly it must be cleaned from packages removed at build time -
+   a syft scan of the component is used as a helper to detect which parent packages are
+   no longer present in the component, but this helper scan is not included in the final
+   Contextual SBOM.</li>
+<li><strong>Builder content</strong> (multistage builds only) - content copied from builder stages to the
+   component, with origin information (builder base vs intermediate) provided by capo.
+   Unlike non-hermetic builds where capo produces only metadata for reparenting existing
+   packages, hermetic builds require capo to produce a full partial SBOM (packages and
+   relationships) that is merged into the final assembled SBOM.</li>
+<li><strong>Hermeto content</strong> - represents content installed in the component’s final stage on top
+   of the base image and intermediate content (content installed in builder stage over the
+   top of any builder base image). Hermeto produces a flat SBOM from the verified lockfile
+   without distinguishing between component-only and intermediate content. In multistage builds,
+   matching against capo’s builder metadata is used to separate intermediate content from
+   component-only content in hermeto’s output.</li>
+</ol>
+<p>This assembly approach reduces dependence on syft. The more ancestors in an image chain are
+built hermetically, the more SBOM content comes from verified lockfiles (hermeto) rather
+than post-build scanning (syft), resulting in a more accurate SBOM.</p>
+<p><em>Warning:</em> Downloaded parent SBOM content may be affected by the component’s build process
+(e.g. <code>dnf update</code> may remove packages by resolving dependency tree). Packages removed at
+build time are detected using the helper syft scan and cleaned from the parent content, but
+this detection is limited to packages with unique identifiers — anonymous packages in the
+parent cannot be identified as removed and may remain as false positives in the resulting
+SBOM.</p>
+<h1 id="structure-of-the-generated-sbom">Structure of the generated SBOM</h1>
+<h2 id="non-contextual-sbom">Non-contextual SBOM</h2>
+<p>The generated SBOM has following structure:</p>
+<pre><code> - SPDXRef-DOCUMENT
+    - SPDXRef-image (DESCRIBES)
+        - package A (CONTAINS)
+        - package B (CONTAINS)
+        - package C (CONTAINS)
+        - package D (CONTAINS)
+        - package E (CONTAINS)
+        - package F (CONTAINS)
+        - package G (CONTAINS)
+        - base image (DESCENDANT_OF)
+        - builder image 1 (BUILD_TOOL_OF)
+        - builder image 2 (BUILD_TOOL_OF)
+</code></pre>
+<h2 id="contextual-sbom_1">Contextual SBOM</h2>
+<p>The generated SBOM has following structure:</p>
+<pre><code> - SPDXRef-DOCUMENT
+    - SPDXRef-image (DESCRIBES)
+        - package A (CONTAINS)
+        - package B (CONTAINS)
+        - base image (DESCENDANT_OF)
+            - package C (CONTAINS)
+            - grandparent image (DESCENDANT_OF)
+                - package D (CONTAINS)
+        - builder image 1 (BUILD_TOOL_OF)
+            - package E (CONTAINS)
+        - builder image 2 (BUILD_TOOL_OF)
+            - package F (CONTAINS)
+            - intermediate image (DESCENDANT_OF)
+                - package G (CONTAINS)
+
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "toc.integrate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
